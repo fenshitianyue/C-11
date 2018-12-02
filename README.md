@@ -1,0 +1,1 @@
+# C++ standard practice

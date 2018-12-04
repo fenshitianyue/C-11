@@ -30,8 +30,26 @@ void test_2(const std::string& s){
   ///////////////////////////////////////////////////////
 }
 
-//并发编程中推荐使用std::unique_lock
+volatile int counter(0);
 std::mutex mtx;
+void func_3(void){
+  for(int i = 0; i < 5; ++i){
+    if(mtx.try_lock()){
+      ++counter;
+      mtx.unlock();
+    }
+  }
+}
+void test_4(){
+  std::thread threads[5];
+  for(int i = 0; i < 10; ++i){
+    threads[i] = std::thread(func_3);
+  }
+  for(auto& t : threads)  t.join();
+  std::cout << "count" << counter << std::endl;
+}
+
+//并发编程中推荐使用std::unique_lock
 void func_2(void){
   std::unique_lock<std::mutex> lock(mtx);
   //一下函数作用域内为临界区

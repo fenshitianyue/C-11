@@ -28,7 +28,7 @@ int main() {
   double gpa;
   char grade;
   std::string name;
-  std::tie(gpa, grade, name) = get_student(1);
+  std::tie(gpa, grade, name) = get_student(1); //tuple 拆包
   std::cout << "ID : 1, "
             << "GPA : " << gpa << ", "
             << "GRADE : " << grade << ", "

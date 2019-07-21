@@ -1,8 +1,3 @@
-//目的：
-//    测试vector的push_back左值数据和emplace_back右值数据的性能比较
-//结果：
-//    经测试，当数据量比较大的时候，emplace_back明显比push_back快
-
 #include <iostream>
 #include <vector>
 #include <string>
@@ -16,6 +11,7 @@ struct WordInfo{
 };
 
 std::vector<WordInfo> dict;
+//dict_data文件包含100 000行数据
 std::string InputPath = "./dict_data";
 
 static int64_t TimeStampMS(){
@@ -24,12 +20,13 @@ static int64_t TimeStampMS(){
   return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
+//创建一个临时对象初始化后插入到vector中
 void BuildWord(const std::string& word){
   WordInfo word_info; 
   word_info.id = dict.size();
   word_info.word = word;
-  //dict.push_back(word_info);
-  dict.emplace_back(std::move(word_info));
+  dict.push_back(word_info); //测试 push_back
+  //dict.emplace_back(std::move(word_info)); //测试 emplace_back
 }
 
 void BuildDict(const std::string& input_path){
@@ -43,7 +40,7 @@ void BuildDict(const std::string& input_path){
   while(std::getline(file, line)){
     BuildWord(line);   
   }
-  std::cout << "time: " << TimeStampMS() - begin << std::endl;
+  std::cout << "time: " << TimeStampMS() - begin << "ms" << std::endl;
   file.close();
   std::cout << "Building a successful." << std::endl;
 }
@@ -52,4 +49,3 @@ int main() {
   BuildDict("./dict_data");
   return 0;
 }
-

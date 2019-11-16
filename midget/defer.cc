@@ -23,21 +23,13 @@ class Defer {
 #define UNIQUE_NAME(prefix) PP_CONCAT(prefix, __COUNTER__)
 #define DEFER auto UNIQUE_NAME(defer_) = Defer() + [&]
 
-#include <cstdio>
+void test() {
+  DEFER { std::cout << "func exit!" << std::endl;  };
+}
 
 int main(){
-  FILE* fp = fopen("/bin/ls", "r");
-  if (NULL == fp) {
-    return 1;
-  }
-  DEFER { fclose(fp); };
-  FILE* fp1 = fopen("/bin/ls", "r");
-  DEFER {
-    if (fp1) {
-      printf("fclose(fp1)\n");
-      fclose(fp1);
-    }
-  };
-  printf("exit\n");
+  std::cout << "Enter main function->" << std::endl;
+  std::cout << "Call test() function..." << std::endl;
+  test();
   return 0;
 }

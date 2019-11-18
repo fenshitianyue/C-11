@@ -14,6 +14,7 @@ int main() {
   //   std::cout << *p2 << std::endl;
   // } 
   // std::shared_ptr<int> p3 = new int(1);  //不允许以暴露裸露的指针进行赋值操作
+  // std::shared_ptr<int> p3 = std::make_shared<int>(1); //可以这样初始化指向内置数据类型的智能指针
   
   //一般的初始化方式
   std::shared_ptr<std::string> p4(new std::string("hello world"));
